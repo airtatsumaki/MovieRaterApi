@@ -21,14 +21,31 @@ class MovieViewSet(viewsets.ModelViewSet):
         if 'stars' in request.data:
             movie = Movie.objects.get(id=pk)
             print('movie title:', movie.title)
-            stars = request.data['stars']
-            print('star rating:', stars)
             user = User.objects.get(id=1)
             print('user:', user)
-            response = {'message': 'it\'s working'}
-            return Response(response, status=status.HTTP_200_OK)
+            stars = request.data['stars']
+            print('star rating:', stars)
+            response = {'message': ''}
+            try:
+                rating = Rating.objects.get(movie=movie.id, user=user.id)
+                rating.stars = stars
+                rating.save()
+                serializer = RatingSerializer(rating, many=False)
+                '''
+                Using a serializer can send the data in a readable format...
+                easily compared to using a return string
+                '''
+                response = {'message': 'Rating UPDATED', 'result': serializer.data}
+                #response['message'] = f'Rating UPDATED for {movie.title} to {stars} stars by {user.id}'
+                return Response(response, status=status.HTTP_200_OK)
+            except:
+                rating = Rating.objects.create(movie=movie, user=user, stars=stars)
+                serializer = RatingSerializer(rating, many=False)
+                response = {'message': 'Rating CREATED', 'result': serializer.data}
+                #response['message'] = f'Rating UPDATED for {movie.title} to {stars} stars by {user.id}'
+                return Response(response, status=status.HTTP_200_OK)
         else:
-            response = {'message': 'Please provide a star rating'}
+            response = {'message': 'An error occured'}
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
 

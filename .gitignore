@@ -1,3 +1,4 @@
 api/__pycache__/
+api/migrations/__pycache__/
 movierater/__pycache__/
 venv/
