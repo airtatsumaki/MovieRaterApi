@@ -11,6 +11,7 @@ class Movie(models.Model):
 
     def number_of_ratings(self):
         # Get all ratings for current movie
+        # Rating. is valid as Rating class is linked via ForeignKey below
         ratings = Rating.objects.filter(movie=self)
         return len(ratings)
     
