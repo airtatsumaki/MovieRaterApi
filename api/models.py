@@ -18,12 +18,12 @@ class Movie(models.Model):
     def average_rating(self):
         sum = 0
         ratings = Rating.objects.filter(movie=self)
-        for x in ratings:
-            sum += x.stars
         if len(ratings) > 0:
+            for x in ratings:
+                sum += x.stars
             return sum / len(ratings)
         else:
-            return 0
+            return sum
 
 class Rating(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)

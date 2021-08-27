@@ -4,12 +4,21 @@ from django.contrib.auth.models import User
 from rest_framework import serializers, viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.authentication import TokenAuthentication
 from .models import Movie, Rating
-from .serializers import MovieSerializer, RatingSerializer
+from .serializers import MovieSerializer, RatingSerializer, UserSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    authentication_classes = (TokenAuthentication,)
+
 
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+    authentication_classes = (TokenAuthentication,)
     '''
     Added decorator to rate_movie
     detail=True = Can only be applied to specific movie ...
@@ -21,7 +30,7 @@ class MovieViewSet(viewsets.ModelViewSet):
         if 'stars' in request.data:
             movie = Movie.objects.get(id=pk)
             print('movie title:', movie.title)
-            user = User.objects.get(id=1)
+            user = request.user
             print('user:', user)
             stars = request.data['stars']
             print('star rating:', stars)
@@ -52,3 +61,4 @@ class MovieViewSet(viewsets.ModelViewSet):
 class RatingViewSet(viewsets.ModelViewSet):
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
+    authentication_classes = (TokenAuthentication,)
