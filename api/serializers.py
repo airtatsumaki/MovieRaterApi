@@ -11,6 +11,11 @@ class UserSerializer(serializers.ModelSerializer):
         fields=['id', 'username', 'password']
         extra_kwargs = {'password': {'write_only': True, 'required': True}}
     
+    '''
+    Method override in serializers generally returns ann object for user
+    to do as they wish.
+    Method to create a new user in the api/users
+    '''
     def create(self, validate_data):
         user = User.objects.create_user(**validate_data)
         Token.objects.create(user=user)
