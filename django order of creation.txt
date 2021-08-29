@@ -1,0 +1,43 @@
+- Install django, rest_framework
+- Create django project
+$ django-admin startproject moverater .
+- Create django app
+$ django-admin startapp api
+- Register app in moveirater/settings.py
+INSTALLED_APPS = [ ...,
+    'rest_framework',
+    'api', ]
+- Add urls to movierater/urls.py
+from django.conf.urls import include
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),
+]
+- Add urls to api/urls.py
+from django.urls import path
+from rest_framework import routers
+from django.conf.urls import include
+from .views import MovieViewSet
+
+router = routers.DefaultRouter()
+router.register('movies', MovieViewSet)
+urlpatterns = [
+    path('', include(router.urls)),
+]
+- Create models (database tables)
+- Register models in api/admin.py
+- Create serializers for the models with any overriding functions
+- Create the viewsets (query data, serialize into a readable format) in api/views.py with any overriding functions
+- Set global user access in movierater/settings.py
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': {
+        'rest_framework.permissions.IsAuthenticated',
+    }
+}
+- Create users using admin/ page and create user tokens too
+- Set any user access restrictions in api/views.py
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)

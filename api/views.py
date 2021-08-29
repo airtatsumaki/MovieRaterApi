@@ -24,7 +24,7 @@ class MovieViewSet(viewsets.ModelViewSet):
     Added decorator to rate_movie
     detail=True = Can only be applied to specific movie ...
     api/movies/1/rate_movie?
-    pk = primary key
+    pk = primary key/ the movie this method is being applied to.
     '''
     @action(detail=True, methods=['POST'])
     def rate_movie(self, request, pk=None):
@@ -74,6 +74,13 @@ class RatingViewSet(viewsets.ModelViewSet):
         response = {'message': 'You can\'t update a rating like that'}
         return Response(response, status=status.HTTP_400_BAD_REQUEST)
     
+    '''
+    Method override in views generally adds a record directly to the data
+    and then returns a http response.
+    Override default create method. Can't use api/ratings/1 POST/PUT
+    Must use api/movies/1/rate_movie/
+    '''
+
     def create(self, request, *args, **kwargs):
         response = {'message': 'You can\'t create a rating like that'}
         return Response(response, status=status.HTTP_400_BAD_REQUEST)
