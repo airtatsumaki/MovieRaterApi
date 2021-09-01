@@ -1,2 +1,3 @@
-__pycache__/
-venv/
+api/__pycache__
+movierater/__pycache__
+venv
