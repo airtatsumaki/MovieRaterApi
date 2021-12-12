@@ -27,9 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
 
-#ALLOWED_HOSTS = ['.ngrok.io','localhost','127.0.0.1']
-ALLOWED_HOSTS = ['movie-rater-naz.herokuapp.com']
-
+ALLOWED_HOSTS = ['.ngrok.io','localhost','127.0.0.1','movie-rater-naz.herokuapp.com']
 
 # Application definition
 
@@ -50,6 +48,7 @@ INSTALLED_APPS = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://127.0.0.1:8000",
 ]
 
 MIDDLEWARE = [
